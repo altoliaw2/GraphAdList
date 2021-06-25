@@ -51,15 +51,26 @@ struct AdList{
     }
 
     public: void fn_BFS(){
-
         bool b_IsVis[i_Size];
         std::fill(b_IsVis, b_IsVis+ i_Size, false);
 
         std::queue<char> o_Qu;
 
         for(int i_Ct =0; i_Ct < i_Size; i_Ct++){
+            int i_Ind = fn_GetIndex(cp_Name[i_Ct]);
 
-            int i_Ind = fn_GetIndex(cl2p_Ptr[i_Ct]->c_Name);
+            if(i_Ind >=0 && i_Ind < i_Size
+               && b_IsVis[i_Ind] == false){
+                o_Qu.push(cp_Name[i_Ct]);
+                b_IsVis [i_Ind] = true;
+
+                for(;o_Qu.empty() == false;){
+                    std::cout<< o_Qu.front() << " ";
+                    o_Qu.pop();
+                }
+            }
+
+            i_Ind = fn_GetIndex(cl2p_Ptr[i_Ct]->c_Name);
 
             if(i_Ind >=0 && i_Ind < i_Size
                && b_IsVis[i_Ind] == false){
@@ -74,10 +85,12 @@ struct AdList{
                     for(Vet* o_Tmp = cl2p_Ptr[i_Ct]->clsp_Ptr;
                         o_Tmp != nullptr;
                         o_Tmp = o_Tmp->clsp_Ptr){
+
                         int i_TmpInd = fn_GetIndex(o_Tmp->c_Name);
                         if(i_TmpInd >=0 && i_TmpInd < i_Size
                            && b_IsVis[i_TmpInd] == false){
-                            o_Qu.push(cl2p_Ptr[i_Ct]->c_Name);
+
+                            o_Qu.push(o_Tmp->c_Name);
                             b_IsVis [i_TmpInd] = true;
                         }
                     }
@@ -115,6 +128,10 @@ int main(){
     o_List.fn_InsVet('D', 'A');
 
     o_List.fn_InsVet('E', 'C');
+
+    /*for(Vet* o_Tmp= (o_List.cl2p_Ptr)[1]; o_Tmp!= nullptr; o_Tmp= o_Tmp->clsp_Ptr){
+        std::cout<< o_Tmp->c_Name << " ";
+    }*/
 
     o_List.fn_BFS();
 
