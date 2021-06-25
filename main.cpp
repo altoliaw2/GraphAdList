@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <iostream>
+#include <queue>
 
 struct Vet{
     public: char c_Name;
@@ -48,6 +49,53 @@ struct AdList{
         }
         delete [] cl2p_Ptr;
     }
+
+    public: void fn_BFS(){
+
+        bool b_IsVis[i_Size];
+        std::fill(b_IsVis, b_IsVis+ i_Size, false);
+
+        std::queue<char> o_Qu;
+
+        for(int i_Ct =0; i_Ct < i_Size; i_Ct++){
+
+            int i_Ind = fn_GetIndex(cl2p_Ptr[i_Ct]->c_Name);
+
+            if(i_Ind >=0 && i_Ind < i_Size
+               && b_IsVis[i_Ind] == false){
+
+                o_Qu.push(cl2p_Ptr[i_Ct]->c_Name);
+                b_IsVis [i_Ind] = true;
+
+                for(;o_Qu.empty() == false;){
+                    std::cout<< o_Qu.front() << " ";
+                    o_Qu.pop();
+
+                    for(Vet* o_Tmp = cl2p_Ptr[i_Ct]->clsp_Ptr;
+                        o_Tmp != nullptr;
+                        o_Tmp = o_Tmp->clsp_Ptr){
+                        int i_TmpInd = fn_GetIndex(o_Tmp->c_Name);
+                        if(i_TmpInd >=0 && i_TmpInd < i_Size
+                           && b_IsVis[i_TmpInd] == false){
+                            o_Qu.push(cl2p_Ptr[i_Ct]->c_Name);
+                            b_IsVis [i_TmpInd] = true;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private: int fn_GetIndex(char c_Name){
+        int i_Ind = -1;
+        for(int i_Ct =0; i_Ct < i_Size; i_Ct++){
+                if(cp_Name[i_Ct] == c_Name){
+                    i_Ind= i_Ct;
+                    break;
+                }
+        }
+        return i_Ind;
+    }
 };
 
 int main(){
@@ -59,11 +107,16 @@ int main(){
     o_List.fn_InsVet('A', 'C');
     o_List.fn_InsVet('A', 'D');
 
-    for(Vet* o_Ele = (o_List.cl2p_Ptr)[0];
-                o_Ele!= nullptr; o_Ele = o_Ele->clsp_Ptr){
+    o_List.fn_InsVet('B', 'C');
+    o_List.fn_InsVet('B', 'E');
 
-        std::cout<< o_Ele->c_Name << " ";
-    }
+    o_List.fn_InsVet('C', 'D');
+
+    o_List.fn_InsVet('D', 'A');
+
+    o_List.fn_InsVet('E', 'C');
+
+    o_List.fn_BFS();
 
     return 0;
 }
