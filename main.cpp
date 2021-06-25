@@ -48,6 +48,46 @@ struct AdList{
         }
         delete [] cl2p_Ptr;
     }
+
+    public: void fn_DFS(){
+        bool b_IsVis[i_Size];
+        std::fill(b_IsVis, b_IsVis+ i_Size, false);
+
+        for(int i_Ct =0; i_Ct < i_Size; i_Ct++){
+            int i_Ind = fn_GetIndex(cp_Name[i_Ct]);
+
+            if(i_Ind >=0 && i_Ind < i_Size
+               && b_IsVis[i_Ind] == false){
+                b_IsVis [i_Ind] = true;
+                fn_DFSLink(b_IsVis, i_Size, i_Ct);
+                std::cout<< cp_Name[i_Ct] << " ";
+            }
+        }
+    }
+
+    public: void fn_DFSLink(bool* bp_IsVis, int i_Size,
+                            int i_Curr){
+        for(Vet* op_Tmp = cl2p_Ptr[i_Curr]; op_Tmp != nullptr;
+            op_Tmp= op_Tmp->clsp_Ptr){
+            int i_Ind = fn_GetIndex(op_Tmp->c_Name);
+            if(i_Ind >=0 && i_Ind < i_Size
+               && bp_IsVis[i_Ind] == false){
+                bp_IsVis [i_Ind] = true;
+                std::cout<< op_Tmp->c_Name << " ";
+            }
+        }
+    }
+
+    private: int fn_GetIndex(char c_Name){
+        int i_Ind = -1;
+        for(int i_Ct =0; i_Ct < i_Size; i_Ct++){
+                if(cp_Name[i_Ct] == c_Name){
+                    i_Ind= i_Ct;
+                    break;
+                }
+        }
+        return i_Ind;
+    }
 };
 
 int main(){
@@ -59,11 +99,16 @@ int main(){
     o_List.fn_InsVet('A', 'C');
     o_List.fn_InsVet('A', 'D');
 
-    for(Vet* o_Ele = (o_List.cl2p_Ptr)[0];
-                o_Ele!= nullptr; o_Ele = o_Ele->clsp_Ptr){
+    o_List.fn_InsVet('B', 'C');
+    o_List.fn_InsVet('B', 'E');
 
-        std::cout<< o_Ele->c_Name << " ";
-    }
+    o_List.fn_InsVet('C', 'D');
+
+    o_List.fn_InsVet('D', 'A');
+
+    o_List.fn_InsVet('E', 'C');
+
+    o_List.fn_DFS();
 
     return 0;
 }
