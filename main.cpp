@@ -129,10 +129,6 @@ int main(){
 
     o_List.fn_InsVet('E', 'C');
 
-    /*for(Vet* o_Tmp= (o_List.cl2p_Ptr)[1]; o_Tmp!= nullptr; o_Tmp= o_Tmp->clsp_Ptr){
-        std::cout<< o_Tmp->c_Name << " ";
-    }*/
-
     o_List.fn_BFS();
 
     return 0;
