@@ -73,6 +73,7 @@ struct AdList{
             if(i_Ind >=0 && i_Ind < i_Size
                && bp_IsVis[i_Ind] == false){
                 bp_IsVis [i_Ind] = true;
+                fn_DFSLink(bp_IsVis, i_Size, i_Ind);
                 std::cout<< op_Tmp->c_Name << " ";
             }
         }
